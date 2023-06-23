@@ -1,20 +1,9 @@
 import "./Product.css"
+import styled from 'styled-components';
 import { useState,useEffect } from "react";
-// import axios from "axios"
 import ProductItem from "./ProductItem";
 const url="https://jsonplaceholder.typicode.com/users"
-// const getdata=(url)=>{
-//   return fetch(url).then((res)=>res.json())
-// }
-// const deleteTodo=(id)=>{
-// return fetch(`https://jsonplaceholder.typicode.com/users/${id}`,{
-//     method:"DELETE",
-//     header:{
-//         "Content-Type":"application/json",
-//     },
-// }).then((res)=>res.json())
 
-// }
 
 function Product(){
     const[data,setData]=useState([])
@@ -29,23 +18,7 @@ function Product(){
            console.log(error)
           });
       };
-    // const getdata = () => {
-    //     axios.get(url).then((res) => {
-    //     // console.log(res.data) 
-    //     setData(res.data)
-    //     }).catch((err) => {
-    //       console.log(err)
-    //     })
-    //   }
-    // const deleteTodo=(id)=>{
-    //     return fetch(`https://jsonplaceholder.typicode.com/users/${id}`,{
-    //         method:"DELETE",
-    //         header:{
-    //             "Content-Type":"application/json",
-    //         },
-    //     }).then((res)=>res.json())
-        
-    //     }
+    
         
     const handleDelete=((id)=>{
      fetch(`https://jsonplaceholder.typicode.com/users/${id}`,{
@@ -53,7 +26,10 @@ function Product(){
             header:{
                 "Content-Type":"application/json",
             },
-        }).then((res)=>res.json())
+        }).then((res)=>{res.json()
+        const remainData=data.filter((el)=>el.id !==id)
+    setData(remainData)
+})
         .catch((error)=>{console.log(error)})
     })
       useEffect(() => {
@@ -62,6 +38,7 @@ function Product(){
       }, [])
     //   console.log(data)
     return(
+        <DIV>
         <div className="Product">
             {data.map((item)=>(
            <ProductItem 
@@ -76,6 +53,29 @@ function Product(){
            />
             ))}
         </div>
+        </DIV>
     )
 }
+const DIV = styled.div`
+@media (min-width:0px) and (max-width:400px){
+    .Product{
+        display:grid;
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+@media (min-width:400px) and (max-width:700px){
+    .Product{
+        display:grid;
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+@media (min-width:700px) and (max-width:900px){
+    .Product{
+        display:grid;
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+
+`
 export default Product
